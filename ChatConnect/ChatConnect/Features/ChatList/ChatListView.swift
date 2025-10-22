@@ -12,9 +12,9 @@ struct ChatListView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack {
-                    ChatView()
-                    ChatView()
-                    ChatView()
+                    ChatItemView()
+                    ChatItemView()
+                    ChatItemView()
                 }
             }
             .navigationTitle("Chats")
