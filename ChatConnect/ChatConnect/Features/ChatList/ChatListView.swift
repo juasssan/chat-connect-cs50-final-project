@@ -8,20 +8,49 @@
 import SwiftUI
 
 struct ChatListView: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack {
-                    ChatItemView()
-                    ChatItemView()
-                    ChatItemView()
+            ZStack {
+                if colorScheme == .dark {
+                    Color(.systemBlue)
+                        .opacity(0.2)
+                        .ignoresSafeArea()
+                } else {
+                    Color(.systemBlue)
+                        .opacity(0.1)
+                        .ignoresSafeArea()
                 }
+
+                ScrollView {
+                    LazyVStack {
+                        Divider()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                        ChatItemView()
+                    }
+                }
+                .navigationTitle("Chats")
+                .font(.largeTitle)
             }
-            .navigationTitle("Chats")
         }
     }
 }
 
 #Preview {
-    ChatListView()
+    ChatListView().preferredColorScheme(.light)
+}
+
+#Preview {
+    ChatListView().preferredColorScheme(.dark)
 }

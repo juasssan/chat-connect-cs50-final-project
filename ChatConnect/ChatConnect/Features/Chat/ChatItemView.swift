@@ -15,12 +15,12 @@ struct ChatItemView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .stroke(
-                    colorScheme == .dark ? .quinary : .quaternary,
-                    lineWidth: 5
+                    colorScheme == .dark ? .quinary : .quinary,
+                    lineWidth: 4
                 )
                 .fill(colorScheme == .dark ? .quaternary : .quinary)
                 .frame(height: 100)
-            HStack(spacing: 0) {
+            HStack(spacing: 12) {
                 ZStack {
                     Circle()
                         .fill(.blue)
@@ -38,11 +38,10 @@ struct ChatItemView: View {
                         .font(.title2)
                         .fontDesign(.rounded)
                 }
-                .padding()
 
                 Spacer()
             }
-            .padding()
+            .padding(.horizontal)
         }
         .padding(.horizontal, 16)
     }
