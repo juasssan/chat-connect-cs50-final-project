@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "C6895BD4-714C-4F9F-95A6-2B78EF387DB2",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ChatConnect.xcodeproj",
+      "identifier" : "437A25E82EA76E6100B04E24",
+      "name" : "ChatConnect"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ChatConnect.xcodeproj",
+        "identifier" : "435221682EB16A98009AC233",
+        "name" : "ChatConnectUnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -6,11 +6,40 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		4352216D2EB16A98009AC233 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 437A25E12EA76E6100B04E24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 437A25E82EA76E6100B04E24;
+			remoteInfo = ChatConnect;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		435221692EB16A98009AC233 /* ChatConnectUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatConnectUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		437A25E92EA76E6100B04E24 /* ChatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		435221752EB16DE5009AC233 /* Exceptions for "ChatConnectUnitTests" folder in "ChatConnectUnitTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ChatConnect.xctestplan,
+			);
+			target = 435221682EB16A98009AC233 /* ChatConnectUnitTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4352216A2EB16A98009AC233 /* ChatConnectUnitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				435221752EB16DE5009AC233 /* Exceptions for "ChatConnectUnitTests" folder in "ChatConnectUnitTests" target */,
+			);
+			path = ChatConnectUnitTests;
+			sourceTree = "<group>";
+		};
 		437A25EB2EA76E6100B04E24 /* ChatConnect */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ChatConnect;
@@ -19,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		435221662EB16A98009AC233 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		437A25E62EA76E6100B04E24 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				437A25EB2EA76E6100B04E24 /* ChatConnect */,
+				4352216A2EB16A98009AC233 /* ChatConnectUnitTests */,
 				437A25EA2EA76E6100B04E24 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				437A25E92EA76E6100B04E24 /* ChatConnect.app */,
+				435221692EB16A98009AC233 /* ChatConnectUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		435221682EB16A98009AC233 /* ChatConnectUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4352216F2EB16A98009AC233 /* Build configuration list for PBXNativeTarget "ChatConnectUnitTests" */;
+			buildPhases = (
+				435221652EB16A98009AC233 /* Sources */,
+				435221662EB16A98009AC233 /* Frameworks */,
+				435221672EB16A98009AC233 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4352216E2EB16A98009AC233 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4352216A2EB16A98009AC233 /* ChatConnectUnitTests */,
+			);
+			name = ChatConnectUnitTests;
+			packageProductDependencies = (
+			);
+			productName = ChatConnectUnitTests;
+			productReference = 435221692EB16A98009AC233 /* ChatConnectUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		437A25E82EA76E6100B04E24 /* ChatConnect */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 437A25F42EA76E6300B04E24 /* Build configuration list for PBXNativeTarget "ChatConnect" */;
@@ -80,6 +141,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					435221682EB16A98009AC233 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 437A25E82EA76E6100B04E24;
+					};
 					437A25E82EA76E6100B04E24 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -100,11 +165,19 @@
 			projectRoot = "";
 			targets = (
 				437A25E82EA76E6100B04E24 /* ChatConnect */,
+				435221682EB16A98009AC233 /* ChatConnectUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		435221672EB16A98009AC233 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		437A25E72EA76E6100B04E24 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		435221652EB16A98009AC233 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		437A25E52EA76E6100B04E24 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +204,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4352216E2EB16A98009AC233 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 437A25E82EA76E6100B04E24 /* ChatConnect */;
+			targetProxy = 4352216D2EB16A98009AC233 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		435221702EB16A98009AC233 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.julio-assis.ChatConnectUnitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChatConnect.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChatConnect";
+			};
+			name = Debug;
+		};
+		435221712EB16A98009AC233 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.julio-assis.ChatConnectUnitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChatConnect.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChatConnect";
+			};
+			name = Release;
+		};
 		437A25F22EA76E6300B04E24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -251,6 +379,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -265,7 +396,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.januarytides.ChatConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -282,6 +418,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -296,7 +435,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.januarytides.ChatConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -309,6 +453,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4352216F2EB16A98009AC233 /* Build configuration list for PBXNativeTarget "ChatConnectUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				435221702EB16A98009AC233 /* Debug */,
+				435221712EB16A98009AC233 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		437A25E42EA76E6100B04E24 /* Build configuration list for PBXProject "ChatConnect" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
