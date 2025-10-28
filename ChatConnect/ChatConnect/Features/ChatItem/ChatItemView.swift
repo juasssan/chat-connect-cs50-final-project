@@ -7,9 +7,17 @@
 
 import SwiftUI
 
-
 struct ChatItemView: View {
     @Environment(\.colorScheme) var colorScheme
+    let user: ChatUser
+
+    private var statusText: String {
+        user.isOnline ? "online" : "offline"
+    }
+
+    private var statusColor: Color {
+        user.isOnline ? .green : .secondary
+    }
 
     var body: some View {
         ZStack {
@@ -25,29 +33,32 @@ struct ChatItemView: View {
                     ZStack {
                         Circle()
                             .fill(.blue)
-                            .frame(width: 70)
-                        Text("NM")
+                            .frame(width: 60)
+                        Text(user.initials)
                             .font(.largeTitle)
                             .fontDesign(.monospaced)
                             .fontWeight(.bold)
                     }
                     VStack(alignment: .leading) {
-                        Text("Mr. Pickles")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                        Text("Cooking 👊🔥 aklsdknsf slknskn fskf")
+                        Text(user.name)
+                            .lineLimit(1)
                             .font(.title2)
+                            .fontWeight(.semibold)
+                        Text(user.status ?? "No status yet.")
+                            .lineLimit(1)
+                            .font(.title3)
                             .fontDesign(.rounded)
-                    }.frame(minWidth: 160, maxHeight: 80)
+                    }
                 }
+                .frame(maxHeight: 80)
                 .padding(.leading)
                 Spacer()
-                Text("online")
+                Text(statusText)
                     .font(.callout)
                     .fontDesign(.monospaced)
                     .fontWeight(.bold)
-                    .foregroundStyle(.green)
-                    .padding(.top, 8)
+                    .foregroundStyle(statusColor)
+                    .padding(.top, 12)
                     .padding(.trailing, 16)
                     .layoutPriority(1)
             }
@@ -57,9 +68,23 @@ struct ChatItemView: View {
 }
 
 #Preview {
-    ChatItemView().preferredColorScheme(.dark)
+    ChatItemView(
+        user: ChatUser(id: 1, isOnline: true, name: "Mr. Pickles", status: "Cooking 👊🔥")
+    )
+    .preferredColorScheme(.dark)
+    ChatItemView(
+        user: ChatUser(id: 1, isOnline: true, name: "Bee", status: "🐝")
+    )
+    .preferredColorScheme(.dark)
+    ChatItemView(
+        user: ChatUser(id: 1, isOnline: true, name: "Mr. Leo The Lion", status: "roar roar roar roar roar")
+    )
+    .preferredColorScheme(.dark)
 }
 
 #Preview {
-    ChatItemView().preferredColorScheme(.light)
+    ChatItemView(
+        user: ChatUser(id: 2, isOnline: false, name: "Morty Smith", status: "Doing homework")
+    )
+    .preferredColorScheme(.light)
 }
