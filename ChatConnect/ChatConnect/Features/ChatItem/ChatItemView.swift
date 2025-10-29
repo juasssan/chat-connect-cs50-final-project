@@ -16,23 +16,23 @@ struct ChatItemView: View {
     }
 
     private var statusColor: Color {
-        user.isOnline ? .green : .secondary
+        user.isOnline ? AppSystemDesign.Colors.chatItemStatusOnline : AppSystemDesign.Colors.chatItemStatusOffline
     }
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25)
                 .stroke(
-                    colorScheme == .dark ? .quinary : .quinary,
+                    AppSystemDesign.Colors.chatItemStroke,
                     lineWidth: 4
                 )
-                .fill(colorScheme == .dark ? .quaternary : .quinary)
+                .fill(colorScheme == .dark ? AppSystemDesign.Colors.chatItemFillDark : AppSystemDesign.Colors.chatItemFillLight)
                 .frame(height: 100)
             HStack(alignment: .top) {
                 HStack(spacing: 12) {
                     ZStack {
                         Circle()
-                            .fill(.blue)
+                            .fill(AppSystemDesign.Colors.chatItemAvatar)
                             .frame(width: 60)
                         Text(user.initials)
                             .font(.largeTitle)

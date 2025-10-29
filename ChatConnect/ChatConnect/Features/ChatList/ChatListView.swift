@@ -10,13 +10,14 @@ import SwiftUI
 struct ChatListView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var viewModel: ChatListViewModel
+    @State private var navigationPath = NavigationPath()
 
     init(viewModel: ChatListViewModel = ChatListViewModel()) {
         _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 backgroundColor
                 content.padding(.horizontal, 8)
@@ -38,7 +39,7 @@ struct ChatListView: View {
             VStack(spacing: 12) {
                 Image(systemName: "exclamationmark.triangle")
                     .font(.largeTitle)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(AppSystemDesign.Colors.chatListErrorIcon)
                 Text(errorMessage)
                     .font(.headline)
                     .multilineTextAlignment(.center)
@@ -47,16 +48,25 @@ struct ChatListView: View {
         } else if viewModel.users.isEmpty {
             Text("No chats yet.")
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(AppSystemDesign.Colors.chatListSecondaryText)
         } else {
             ScrollView {
                 LazyVStack(spacing: 12) {
                     Divider()
                     ForEach(viewModel.users) { user in
-                        ChatItemView(user: user)
+                        NavigationLink(value: user) {
+                            ChatItemView(user: user)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.vertical)
+            }
+            .navigationDestination(for: ChatUser.self) { user in
+                ChatView(
+                    peerName: user.name,
+                    peerStatus: user.status ?? "No status yet."
+                )
             }
         }
     }
@@ -64,11 +74,9 @@ struct ChatListView: View {
     private var backgroundColor: some View {
         Group {
             if colorScheme == .dark {
-                Color(.systemBlue)
-                    .opacity(0.2)
+                AppSystemDesign.Colors.chatListBackgroundDark
             } else {
-                Color(.systemBlue)
-                    .opacity(0.1)
+                AppSystemDesign.Colors.chatListBackgroundLight
             }
         }
         .ignoresSafeArea()

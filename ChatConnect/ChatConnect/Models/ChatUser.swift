@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatUser: Codable, Equatable, Identifiable {
+struct ChatUser: Codable, Equatable, Identifiable, Hashable {
     let id: Int
     let isOnline: Bool
     let name: String
