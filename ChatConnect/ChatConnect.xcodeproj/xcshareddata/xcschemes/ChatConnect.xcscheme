@@ -30,7 +30,10 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:ChatConnect.xctestplan"
+            reference = "container:ChatConnect.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:ChatConnectUnitTests/ChatConnect.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
