@@ -1,17 +1,13 @@
 //
-//  ChatUserService.swift
+//  RemoteChatUsersService.swift
 //  ChatConnect
 //
-//  Created by Julio Cesar on 28/10/25.
+//  Created by Julio Cesar on 29/10/25.
 //
 
 import Foundation
 
-protocol ChatUsersService {
-    func fetchUsers() async throws -> [ChatUser]
-}
-
-struct RemoteChatUsersService: ChatUsersService {
+class RemoteChatUsersService: ChatUsersService {
     private let session: URLSession
     private let url: URL
     private let decoder: JSONDecoder
