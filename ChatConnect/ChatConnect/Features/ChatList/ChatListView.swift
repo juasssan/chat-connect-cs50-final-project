@@ -64,8 +64,11 @@ struct ChatListView: View {
             }
             .navigationDestination(for: ChatUser.self) { user in
                 ChatView(
-                    peerName: user.name,
-                    peerStatus: user.status ?? "No status yet."
+                    viewModel: ChatViewModel(
+                        currentUserId: viewModel.currentUserId,
+                        currentUserName: viewModel.currentUserName,
+                        peer: user
+                    )
                 )
             }
         }
@@ -90,6 +93,8 @@ struct ChatListView: View {
                 ChatUser(id: 1, isOnline: true, name: "Frodo Baggins", status: "Questing"),
                 ChatUser(id: 2, isOnline: false, name: "Samwise Gamgee", status: "Gardening")
             ],
+            currentUserId: 16,
+            currentUserName: "Frodo Baggins",
             service: PreviewChatUsersService(
                 users: [
                     ChatUser(id: 1, isOnline: true, name: "Frodo Baggins", status: "Questing"),
@@ -107,6 +112,8 @@ struct ChatListView: View {
             users: [
                 ChatUser(id: 3, isOnline: true, name: "Gandalf the Grey", status: "Arriving precisely when he means to")
             ],
+            currentUserId: 42,
+            currentUserName: "Pippin Took",
             service: PreviewChatUsersService(
                 users: [
                     ChatUser(id: 3, isOnline: true, name: "Gandalf the Grey", status: "Arriving precisely when he means to")

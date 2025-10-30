@@ -38,6 +38,8 @@ struct ChatListViewModelTests {
 
         await viewModel.fetchUsers()
 
+        #expect(viewModel.currentUserId == 99)
+        #expect(viewModel.currentUserName == "You")
         #expect(viewModel.users == expectedUsers)
         #expect(viewModel.errorMessage == nil)
         #expect(viewModel.isLoading == false)
