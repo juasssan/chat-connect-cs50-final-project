@@ -10,23 +10,25 @@ import SwiftUI
 struct ChatView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
-    @State private var draft = ""
+    @State private var viewModel: ChatViewModel
 
-    let peerName: String
-    let peerStatus: String
-    let currentUserName: String
-    let messages: [MockMessage]
+    init(viewModel: ChatViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
 
     init(
-        peerName: String = "Tom Bombadil",
-        peerStatus: String = "Chilling",
-        currentUserName: String = "You",
-        messages: [MockMessage] = MockMessage.sampleConversation
+        currentUserId: Int,
+        currentUserName: String,
+        peer: ChatUser,
+        socketService: ChatSocketService? = nil
     ) {
-        self.peerName = peerName
-        self.peerStatus = peerStatus
-        self.currentUserName = currentUserName
-        self.messages = messages
+        let viewModel = ChatViewModel(
+            currentUserId: currentUserId,
+            currentUserName: currentUserName,
+            peer: peer,
+            socketService: socketService
+        )
+        _viewModel = State(initialValue: viewModel)
     }
 
     var body: some View {
@@ -35,7 +37,7 @@ struct ChatView: View {
             VStack(spacing: 0) {
                 header
                 Divider().opacity(0.1)
-                messageList
+                messageSection
                 messageInput
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
@@ -45,6 +47,12 @@ struct ChatView: View {
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .task {
+            viewModel.start()
+        }
+        .onDisappear {
+            viewModel.stop()
+        }
     }
 
     private var isDarkMode: Bool { colorScheme == .dark }
@@ -82,10 +90,10 @@ struct ChatView: View {
             .buttonStyle(.plain)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(peerName)
+                Text(viewModel.peerName)
                     .font(.title2)
                     .fontWeight(.semibold)
-                Text(peerStatus)
+                Text(viewModel.peerStatus)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -96,11 +104,33 @@ struct ChatView: View {
         .padding(.bottom, 8)
     }
 
+    private var messageSection: some View {
+        ZStack {
+            messageList
+            if let errorMessage = viewModel.errorMessage {
+                VStack {
+                    Spacer()
+                    Text(errorMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.red.opacity(0.12))
+                        )
+                        .padding(.bottom, 16)
+                }
+                .transition(.opacity)
+            }
+        }
+    }
+
     private var messageList: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 16) {
-                    ForEach(messages) { message in
+                    ForEach(viewModel.messages) { message in
                         messageRow(for: message)
                             .id(message.id)
                     }
@@ -109,12 +139,29 @@ struct ChatView: View {
                 .padding(.top, 20)
             }
             .onAppear { scrollToLatest(in: proxy) }
+            .onChange(of: viewModel.messages.count, initial: false) { _, _ in
+                scrollToLatest(in: proxy)
+            }
+            .overlay {
+                if viewModel.messages.isEmpty {
+                    if viewModel.isLoading {
+                        ProgressView("Connecting…")
+                            .progressViewStyle(.circular)
+                            .padding()
+                    } else {
+                        Text("No messages yet.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }
+                }
+            }
         }
     }
 
-    private func messageRow(for message: MockMessage) -> some View {
+    private func messageRow(for message: ChatMessage) -> some View {
         VStack(spacing: 4) {
-            Text(message.timeString)
+            Text(timeString(for: message))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             messageBubble(for: message)
@@ -123,21 +170,21 @@ struct ChatView: View {
     }
 
     private func scrollToLatest(in proxy: ScrollViewProxy) {
-        guard let last = messages.last else { return }
+        guard let last = viewModel.messages.last else { return }
         proxy.scrollTo(last.id, anchor: .bottom)
     }
 
-    private func messageBubble(for message: MockMessage) -> some View {
+    private func messageBubble(for message: ChatMessage) -> some View {
         let style = messageBubbleStyle(for: message)
 
         return HStack {
             if style.isMine { Spacer(minLength: bubbleSidePadding) }
             VStack(alignment: .leading, spacing: 4) {
-                Text(message.text)
+                Text(message.body)
                     .font(.body)
                     .foregroundStyle(style.text)
                     .multilineTextAlignment(.leading)
-                Text(message.timeShortString)
+                Text(shortTimeString(for: message))
                     .font(.caption2)
                     .foregroundStyle(style.timestamp)
                     .frame(maxWidth: .infinity, alignment: .trailing)
@@ -154,8 +201,8 @@ struct ChatView: View {
         .frame(maxWidth: .infinity, alignment: style.isMine ? .trailing : .leading)
     }
 
-    private func messageBubbleStyle(for message: MockMessage) -> (isMine: Bool, background: Color, text: Color, timestamp: Color) {
-        let isMine = message.author == currentUserName
+    private func messageBubbleStyle(for message: ChatMessage) -> (isMine: Bool, background: Color, text: Color, timestamp: Color) {
+        let isMine = viewModel.ownsMessage(message)
         let background = isMine
             ? AppSystemDesign.Colors.chatBubbleMineBackground
             : AppSystemDesign.Colors.chatBubblePeerBackground
@@ -170,7 +217,10 @@ struct ChatView: View {
 
     private var messageInput: some View {
         HStack(spacing: 12) {
-            TextField("Message", text: $draft, axis: .vertical)
+            TextField("Message", text: Binding(
+                get: { viewModel.draft },
+                set: { viewModel.draft = $0 }
+            ), axis: .vertical)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
@@ -181,7 +231,9 @@ struct ChatView: View {
                 .foregroundStyle(.primary)
 
             Button {
-                // TODO: send message to backend and refresh the items in the screen
+                Task {
+                    await viewModel.sendDraft()
+                }
             } label: {
                 Image(systemName: "paperplane.fill")
                     .font(.system(size: 18, weight: .bold))
@@ -192,33 +244,16 @@ struct ChatView: View {
                     )
             }
             .buttonStyle(.plain)
+            .disabled(viewModel.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
     }
-}
 
-struct MockMessage: Identifiable {
-    let id: UUID = .init()
-    let author: String
-    let text: String
-    let time: Date
-
-    var timeString: String {
-        Self.timeFormatter.string(from: time)
+    private func timeString(for message: ChatMessage) -> String {
+        Self.timeFormatter.string(from: message.timestamp)
     }
 
-    var timeShortString: String {
-        Self.shortTimeFormatter.string(from: time)
-    }
-
-    static var sampleConversation: [MockMessage] {
-        let calendar = Calendar.current
-        let base = calendar.startOfDay(for: Date()).addingTimeInterval(60 * 60 * 21 + 30 * 60) // 9:30 PM
-        return [
-            MockMessage(author: "You", text: "I'm good, how about", time: base),
-            MockMessage(author: "Tom Bombadil", text: "I'm doing great, thanks!", time: base.addingTimeInterval(120)),
-            MockMessage(author: "You", text: "I'm doing great thanks!", time: base.addingTimeInterval(180)),
-            MockMessage(author: "J. R. R. Tolkien", text: "Glad to hear that!", time: base.addingTimeInterval(240))
-        ]
+    private func shortTimeString(for message: ChatMessage) -> String {
+        Self.shortTimeFormatter.string(from: message.timestamp)
     }
 
     private static let timeFormatter: DateFormatter = {
@@ -235,12 +270,56 @@ struct MockMessage: Identifiable {
     }()
 }
 
-#Preview {
-    ChatView()
-        .preferredColorScheme(.dark)
+private struct PreviewChatSocketService: ChatSocketService {
+    func connect(userId: Int, peerId: Int) -> AsyncThrowingStream<ChatSocketEvent, Error> {
+        AsyncThrowingStream { continuation in
+            let messages = [
+                ChatMessage(
+                    id: UUID().uuidString,
+                    from: "Samwise Gamgee",
+                    to: "Frodo Baggins",
+                    body: "Where are you?",
+                    timestamp: Date().addingTimeInterval(-120),
+                    isAutomated: false
+                ),
+                ChatMessage(
+                    id: UUID().uuidString,
+                    from: "Frodo Baggins",
+                    to: "Samwise Gamgee",
+                    body: "Right behind you.",
+                    timestamp: Date().addingTimeInterval(-30),
+                    isAutomated: false
+                )
+            ]
+            continuation.yield(.history(messages))
+            continuation.finish()
+        }
+    }
+
+    func send(_ text: String) async throws {}
+    func disconnect() async {}
 }
 
 #Preview {
-    ChatView()
-        .preferredColorScheme(.light)
+    ChatView(
+        viewModel: ChatViewModel(
+            currentUserId: 1,
+            currentUserName: "Frodo Baggins",
+            peer: ChatUser(id: 2, isOnline: true, name: "Samwise Gamgee", status: "Gardening"),
+            socketService: PreviewChatSocketService()
+        )
+    )
+    .preferredColorScheme(.dark)
+}
+
+#Preview {
+    ChatView(
+        viewModel: ChatViewModel(
+            currentUserId: 1,
+            currentUserName: "Frodo Baggins",
+            peer: ChatUser(id: 2, isOnline: true, name: "Samwise Gamgee", status: "Gardening"),
+            socketService: PreviewChatSocketService()
+        )
+    )
+    .preferredColorScheme(.light)
 }
